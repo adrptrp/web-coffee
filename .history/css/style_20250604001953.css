@@ -81,8 +81,10 @@ button {
   border: none;
 }
 
-h1, h2, h3, h4, .section__title {
-  font-size: clamp(1.2rem, 2vw + 1rem, 2.5rem);
+h1, h2, h3, h4 {
+  font-family: var(--second-font);
+  font-weight: var(--font-medium);
+  line-height: 110%;
 }
 
 ul {
@@ -94,9 +96,9 @@ a {
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
-  display: block;
 }
 
 /*=============== REUSABLE CSS CLASSES ===============*/
@@ -394,13 +396,6 @@ img {
 
 .button-dark:hover{
   background-color: var(--first-color-alt);
-}
-
-.button, .products__button, .button-dark {
-  width: 100%;
-  max-width: 220px;
-  margin: 0.5rem auto;
-  display: block;
 }
 
 /*=============== POPULAR ===============*/

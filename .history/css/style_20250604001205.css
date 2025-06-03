@@ -81,8 +81,10 @@ button {
   border: none;
 }
 
-h1, h2, h3, h4, .section__title {
-  font-size: clamp(1.2rem, 2vw + 1rem, 2.5rem);
+h1, h2, h3, h4 {
+  font-family: var(--second-font);
+  font-weight: var(--font-medium);
+  line-height: 110%;
 }
 
 ul {
@@ -94,9 +96,9 @@ a {
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
-  display: block;
 }
 
 /*=============== REUSABLE CSS CLASSES ===============*/
@@ -123,28 +125,6 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
-}
-
-@media screen and (max-width: 900px) {
-  .products__container,
-  .popular__container .swiper-wrapper {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .products__container,
-  .popular__container .swiper-wrapper {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .footer__container {
-    grid-template-columns: 1fr;
-  }
-  .main {
-    padding: 1rem 0;
-  }
 }
 
 .section {
@@ -204,29 +184,13 @@ img {
 @media screen and (max-width: 1150px) {
   .nav__menu{
     position: fixed;
-    top: 0; right: -100%;
-    width: 70vw;
-    max-width: 320px;
-    height: 100vh;
-    background: #fff;
-    transition: right 0.3s;
-    z-index: 1000;
-    box-shadow: -2px 0 16px rgba(0,0,0,0.07);
-  }
-}
-
-.nav__menu.show-menu {
-  right: 0;
-}
-
-@media screen and (min-width: 768px) {
-  .nav__menu {
-    position: static;
-    width: auto;
-    height: auto;
-    background: none;
-    box-shadow: none;
-    display: block;
+    top: -120%;
+    left: 0;
+    background-color: var(--body-color);
+    width: 100%;
+    padding-block: 4rem;
+    box-shadow: 0 8px 16px hsla(166, 85%, 8%, .3);
+    transition: top .4s;
   }
 }
 
@@ -394,13 +358,6 @@ img {
 
 .button-dark:hover{
   background-color: var(--first-color-alt);
-}
-
-.button, .products__button, .button-dark {
-  width: 100%;
-  max-width: 220px;
-  margin: 0.5rem auto;
-  display: block;
 }
 
 /*=============== POPULAR ===============*/
@@ -574,17 +531,12 @@ img {
 /* Responsive footer */
 .footer__container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 2rem;
 }
-@media screen and (max-width: 900px) {
+@media screen and (min-width: 768px) {
   .footer__container {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media screen and (max-width: 600px) {
-  .footer__container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

@@ -396,13 +396,6 @@ img {
   background-color: var(--first-color-alt);
 }
 
-.button, .products__button, .button-dark {
-  width: 100%;
-  max-width: 220px;
-  margin: 0.5rem auto;
-  display: block;
-}
-
 /*=============== POPULAR ===============*/
 .popular{
   background-color: var(--body-white-color);
