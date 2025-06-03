@@ -110,109 +110,41 @@ sr.reveal(`.about__coffee`, {delay: 1000})
 sr.reveal(`.about__leaf-1, .about__leaf-2`, {delay: 1400, rotate: {z: 90}})
 sr.reveal(`.products__card, .contact__info`, {interval: 100})
 
-/*=============== CART LOGIC ===============*/
-const cart = document.getElementById('cart');
-const cartOverlay = document.getElementById('cart-overlay');
-const cartClose = document.getElementById('cart-close');
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
-const cartForm = document.getElementById('cart-form');
+/*=============== CHECKOUT MODAL ===============*/
+const checkoutModal = document.getElementById('checkout-modal');
+const checkoutModalOverlay = document.getElementById('checkout-modal-overlay');
+const checkoutModalClose = document.getElementById('checkout-modal-close');
+const checkoutModalBody = document.getElementById('checkout-modal-body');
+const checkoutModalConfirm = document.getElementById('checkout-modal-confirm');
 
-let cartData = [];
-
-// Show/hide cart
-function showCart() { cart.style.display = 'block'; }
-function hideCart() { cart.style.display = 'none'; }
-cartOverlay.addEventListener('click', hideCart);
-cartClose.addEventListener('click', hideCart);
-
-// Add to cart from any menu
-document.querySelectorAll('.products__button, .button-dark').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    let card = btn.closest('.products__card') || btn.closest('.popular__card');
-    if (!card) return;
-    const name = card.querySelector('.products__name, .popular__name').textContent;
-    const price = card.querySelector('.products__price')
-      ? card.querySelector('.products__price').textContent
-      : (btn.textContent.match(/Rp[\d.]+/) ? btn.textContent.match(/Rp[\d.]+/)[0] : 'Rp0');
-    const img = card.querySelector('.products__coffee, .popular__coffee').getAttribute('src');
-    addToCart({ name, price, img });
-    showCart();
-  });
-});
-
-function addToCart(item) {
-  const found = cartData.find(i => i.name === item.name);
-  if (found) {
-    found.qty += 1;
-  } else {
-    cartData.push({ ...item, qty: 1, checked: true });
-  }
-  renderCart();
+// Show checkout modal
+function showCheckoutModal(orderList) {
+  checkoutModalBody.innerHTML = orderList.map(i =>
+    `<div>${i.name} x${i.qty} (${i.price})</div>`
+  ).join('');
+  checkoutModal.style.display = 'flex';
 }
-
-function renderCart() {
-  cartItems.innerHTML = '';
-  let total = 0;
-  cartData.forEach((item, idx) => {
-    const priceNum = parseInt(item.price.replace(/[^\d]/g, ''));
-    if (item.checked) total += priceNum * item.qty;
-    cartItems.innerHTML += `
-      <div class="cart__item">
-        <input type="checkbox" class="cart__item-checkbox" data-idx="${idx}" ${item.checked ? 'checked' : ''}>
-        <img src="${item.img}" class="cart__item-img" alt="${item.name}">
-        <div class="cart__item-info">
-          <div>${item.name}</div>
-          <div>
-            <button type="button" class="cart__item-qty-btn" data-action="dec" data-idx="${idx}">-</button>
-            <span>${item.qty}</span>
-            <button type="button" class="cart__item-qty-btn" data-action="inc" data-idx="${idx}">+</button>
-          </div>
-          <div>${item.price}</div>
-        </div>
-        <button class="cart__item-remove" data-idx="${idx}" title="Remove"><i class="ri-delete-bin-6-line"></i></button>
-      </div>
-    `;
-  });
-  cartTotal.textContent = 'Rp' + total.toLocaleString('id-ID');
-
-  // Checkbox event
-  document.querySelectorAll('.cart__item-checkbox').forEach(cb => {
-    cb.addEventListener('change', function() {
-      const idx = cb.getAttribute('data-idx');
-      cartData[idx].checked = cb.checked;
-      renderCart();
-    });
-  });
-  // Qty event
-  document.querySelectorAll('.cart__item-qty-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const idx = btn.getAttribute('data-idx');
-      if (btn.dataset.action === 'inc') cartData[idx].qty++;
-      if (btn.dataset.action === 'dec' && cartData[idx].qty > 1) cartData[idx].qty--;
-      renderCart();
-    });
-  });
-  // Remove event
-  document.querySelectorAll('.cart__item-remove').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const idx = btn.getAttribute('data-idx');
-      cartData.splice(idx, 1);
-      renderCart();
-    });
-  });
+// Hide checkout modal
+function hideCheckoutModal() {
+  checkoutModal.style.display = 'none';
 }
+checkoutModalOverlay.addEventListener('click', hideCheckoutModal);
+checkoutModalClose.addEventListener('click', hideCheckoutModal);
 
-// Place Order (checkout via WhatsApp)
-cartForm.addEventListener('submit', function(e) {
+// Intercept cart checkout
+document.getElementById('cart-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const selected = cartData.filter(i => i.checked);
   if (selected.length === 0) {
     alert('Pilih minimal 1 item untuk dipesan!');
     return;
   }
-  // Format pesan WhatsApp
+  showCheckoutModal(selected);
+});
+
+// Konfirmasi & Kirim (WhatsApp)
+checkoutModalConfirm.addEventListener('click', function() {
+  const selected = cartData.filter(i => i.checked);
   let pesan = 'Halo, saya ingin memesan:\n';
   selected.forEach(i => {
     pesan += `- ${i.name} x${i.qty} (${i.price})\n`;
@@ -223,23 +155,40 @@ cartForm.addEventListener('submit', function(e) {
   // Hapus item yang di-checkout dari cart
   cartData = cartData.filter(i => !i.checked);
   renderCart();
+  hideCheckoutModal();
   hideCart();
 });
 
-// Tambahkan tombol cart di header/nav jika belum ada
-const nav = document.querySelector('.nav');
-if(nav && !document.querySelector('.nav__cart')) {
-  const cartBtn = document.createElement('button');
-  cartBtn.className = 'nav__cart';
-  cartBtn.innerHTML = '<i class="ri-shopping-cart-2-line"></i>';
-  cartBtn.style.background = 'none';
-  cartBtn.style.border = 'none';
-  cartBtn.style.fontSize = '1.5rem';
-  cartBtn.style.cursor = 'pointer';
-  cartBtn.title = 'Lihat Keranjang';
-  cartBtn.addEventListener('click', showCart);
-  nav.appendChild(cartBtn);
+function selectDelivery(type, event) {
+    document.querySelectorAll('.delivery-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+    document.getElementById(type).checked = true;
+    if (type === 'delivery') {
+        deliveryFee = 15000;
+        document.getElementById('address-section').style.display = 'block';
+        document.getElementById('address').required = true;
+        document.getElementById('city').required = true;
+        document.getElementById('postalCode').required = true;
+    } else {
+        deliveryFee = 0;
+        document.getElementById('address-section').style.display = 'none';
+        document.getElementById('address').required = false;
+        document.getElementById('city').required = false;
+        document.getElementById('postalCode').required = false;
+    }
+    updateTotal();
 }
 
-// Render awal jika ada data
-renderCart();
+function selectPayment(type, event) {
+    document.querySelectorAll('.payment-method').forEach(option => {
+        option.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+    document.getElementById(type).checked = true;
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkout-modal').style.display = 'none';
+}

@@ -1125,7 +1125,7 @@ img {
   display: none;
   z-index: 9999;
 }
-.cart.show, .cart[style*="display: block"] {
+.cart.show {
   display: block;
 }
 .cart__overlay {
@@ -1172,26 +1172,12 @@ img {
 .cart__item-info {
   flex: 1;
 }
-.cart__item-qty-btn {
-  width: 24px;
-  height: 24px;
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.cart__item-checkbox {
-  margin-right: 1rem;
-  accent-color: var(--first-color, #b6895b);
-}
 .cart__item-remove {
   background: none;
   border: none;
   color: #e74c3c;
   font-size: 1.2rem;
   cursor: pointer;
-  margin-left: 0.5rem;
 }
 .cart__footer {
   border-top: 1px solid #eee;

@@ -182,7 +182,7 @@
                <div class="products__data">
                   <h3 class="products__name">ICED COFFEE MOCHA</h3>
                   <span class="products__price">Rp37.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -198,7 +198,7 @@
                <div class="products__data">
                   <h3 class="products__name">COFFEE WITH CREAM</h3>
                   <span class="products__price">Rp25.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -214,7 +214,7 @@
                <div class="products__data">
                   <h3 class="products__name">ESPRESSO</h3>
                   <span class="products__price">Rp18.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -230,7 +230,7 @@
                <div class="products__data">
                   <h3 class="products__name">CAPPUCCINO</h3>
                   <span class="products__price">Rp28.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -246,7 +246,7 @@
                <div class="products__data">
                   <h3 class="products__name">CARAMEL MACCHIATO</h3>
                   <span class="products__price">Rp32.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -262,7 +262,7 @@
                <div class="products__data">
                   <h3 class="products__name">AMERICANO</h3>
                   <span class="products__price">Rp22.000</span>
-                  <button class="products__button">
+                  <button class="products__button add-to-cart-btn" type="button">
                      <i class="ri-shopping-bag-3-fill"></i>
                   </button>
                </div>
@@ -373,28 +373,9 @@
 
       <!--=============== MAIN JS ===============-->
       <script src="js/main.js"></script>
-   </body>
-</html>
 
-      <!--==================== CHEAKOUT CART ====================-->
-      <div class="checkout__cart">
-         <div class="checkout__cart-header">
-            <h3 class="checkout__cart-title">Your Cart</h3>
-            <button class="checkout__cart-close">
-               <i class="ri-close-line"></i>
-            </button>
-         </div>
-         <ul class="checkout__cart-list">
-            <!-- Cart items will be dynamically added here -->
-         </ul>
-         <div class="checkout__cart-footer">
-            <span class="checkout__cart-total">Total: Rp0</span>
-            <button class="checkout__cart-button button">Checkout</button>
-         </div>
-      </div>
-
-<!-- Cart Modal -->
-<div class="cart" id="cart" style="display:none;">
+      <!-- Cart Modal -->
+<div class="cart" id="cart">
   <div class="cart__overlay" id="cart-overlay"></div>
   <div class="cart__content">
     <div class="cart__header">
@@ -402,9 +383,7 @@
       <button class="cart__close" id="cart-close"><i class="ri-close-line"></i></button>
     </div>
     <form id="cart-form">
-      <div class="cart__items" id="cart-items">
-        <!-- Daftar pesanan akan muncul di sini lewat JS -->
-      </div>
+      <div class="cart__items" id="cart-items"></div>
       <div class="cart__footer">
         <span>Total: <span id="cart-total">Rp0</span></span>
         <button type="submit" class="button" id="cart-checkout">Place Order</button>
@@ -412,3 +391,5 @@
     </form>
   </div>
 </div>
+   </body>
+</html>

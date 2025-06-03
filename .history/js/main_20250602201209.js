@@ -110,44 +110,61 @@ sr.reveal(`.about__coffee`, {delay: 1000})
 sr.reveal(`.about__leaf-1, .about__leaf-2`, {delay: 1400, rotate: {z: 90}})
 sr.reveal(`.products__card, .contact__info`, {interval: 100})
 
-/*=============== CART LOGIC ===============*/
+/*=============== CART FUNCTIONALITY ===============*/
 const cart = document.getElementById('cart');
 const cartOverlay = document.getElementById('cart-overlay');
 const cartClose = document.getElementById('cart-close');
 const cartItems = document.getElementById('cart-items');
 const cartTotal = document.getElementById('cart-total');
-const cartForm = document.getElementById('cart-form');
+const cartCheckout = document.getElementById('cart-checkout');
 
 let cartData = [];
 
-// Show/hide cart
-function showCart() { cart.style.display = 'block'; }
-function hideCart() { cart.style.display = 'none'; }
+// Show cart
+function showCart() {
+  cart.classList.add('show');
+}
+// Hide cart
+function hideCart() {
+  cart.classList.remove('show');
+}
 cartOverlay.addEventListener('click', hideCart);
 cartClose.addEventListener('click', hideCart);
 
-// Add to cart from any menu
-document.querySelectorAll('.products__button, .button-dark').forEach(btn => {
+// Add to cart from products
+document.querySelectorAll('.products__button').forEach((btn) => {
+  btn.addEventListener('click', function() {
+    const card = btn.closest('.products__card');
+    const name = card.querySelector('.products__name').textContent;
+    const price = card.querySelector('.products__price').textContent;
+    const img = card.querySelector('.products__coffee').getAttribute('src');
+    addToCart({ name, price, img });
+    showCart();
+  });
+});
+
+// Add to cart from popular
+document.querySelectorAll('.popular__card .button-dark').forEach((btn) => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
-    let card = btn.closest('.products__card') || btn.closest('.popular__card');
-    if (!card) return;
-    const name = card.querySelector('.products__name, .popular__name').textContent;
-    const price = card.querySelector('.products__price')
-      ? card.querySelector('.products__price').textContent
-      : (btn.textContent.match(/Rp[\d.]+/) ? btn.textContent.match(/Rp[\d.]+/)[0] : 'Rp0');
-    const img = card.querySelector('.products__coffee, .popular__coffee').getAttribute('src');
+    const card = btn.closest('.popular__card');
+    const name = card.querySelector('.popular__name').textContent;
+    // Ambil harga dari teks tombol
+    const priceText = btn.textContent.match(/Rp[\d.]+/);
+    const price = priceText ? priceText[0] : 'Rp0';
+    const img = card.querySelector('.popular__coffee').getAttribute('src');
     addToCart({ name, price, img });
     showCart();
   });
 });
 
 function addToCart(item) {
+  // Cek jika sudah ada, tambah qty
   const found = cartData.find(i => i.name === item.name);
   if (found) {
     found.qty += 1;
   } else {
-    cartData.push({ ...item, qty: 1, checked: true });
+    cartData.push({ ...item, qty: 1 });
   }
   renderCart();
 }
@@ -156,45 +173,22 @@ function renderCart() {
   cartItems.innerHTML = '';
   let total = 0;
   cartData.forEach((item, idx) => {
+    // Ambil angka dari harga
     const priceNum = parseInt(item.price.replace(/[^\d]/g, ''));
-    if (item.checked) total += priceNum * item.qty;
+    total += priceNum * item.qty;
     cartItems.innerHTML += `
       <div class="cart__item">
-        <input type="checkbox" class="cart__item-checkbox" data-idx="${idx}" ${item.checked ? 'checked' : ''}>
         <img src="${item.img}" class="cart__item-img" alt="${item.name}">
         <div class="cart__item-info">
           <div>${item.name}</div>
-          <div>
-            <button type="button" class="cart__item-qty-btn" data-action="dec" data-idx="${idx}">-</button>
-            <span>${item.qty}</span>
-            <button type="button" class="cart__item-qty-btn" data-action="inc" data-idx="${idx}">+</button>
-          </div>
-          <div>${item.price}</div>
+          <div>${item.price} x ${item.qty}</div>
         </div>
-        <button class="cart__item-remove" data-idx="${idx}" title="Remove"><i class="ri-delete-bin-6-line"></i></button>
+        <button class="cart__item-remove" data-idx="${idx}"><i class="ri-delete-bin-6-line"></i></button>
       </div>
     `;
   });
   cartTotal.textContent = 'Rp' + total.toLocaleString('id-ID');
-
-  // Checkbox event
-  document.querySelectorAll('.cart__item-checkbox').forEach(cb => {
-    cb.addEventListener('change', function() {
-      const idx = cb.getAttribute('data-idx');
-      cartData[idx].checked = cb.checked;
-      renderCart();
-    });
-  });
-  // Qty event
-  document.querySelectorAll('.cart__item-qty-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const idx = btn.getAttribute('data-idx');
-      if (btn.dataset.action === 'inc') cartData[idx].qty++;
-      if (btn.dataset.action === 'dec' && cartData[idx].qty > 1) cartData[idx].qty--;
-      renderCart();
-    });
-  });
-  // Remove event
+  // Remove item
   document.querySelectorAll('.cart__item-remove').forEach(btn => {
     btn.addEventListener('click', function() {
       const idx = btn.getAttribute('data-idx');
@@ -204,29 +198,19 @@ function renderCart() {
   });
 }
 
-// Place Order (checkout via WhatsApp)
-cartForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  const selected = cartData.filter(i => i.checked);
-  if (selected.length === 0) {
-    alert('Pilih minimal 1 item untuk dipesan!');
+// Checkout (submit order)
+cartCheckout.addEventListener('click', function() {
+  if(cartData.length === 0) {
+    alert('Keranjang kosong!');
     return;
   }
-  // Format pesan WhatsApp
-  let pesan = 'Halo, saya ingin memesan:\n';
-  selected.forEach(i => {
-    pesan += `- ${i.name} x${i.qty} (${i.price})\n`;
-  });
-  const nomorWA = '6289632372161'; // Ganti dengan nomor WA cafe kamu
-  const urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-  window.open(urlWA, '_blank');
-  // Hapus item yang di-checkout dari cart
-  cartData = cartData.filter(i => !i.checked);
+  alert('Pesanan berhasil dikirim!');
+  cartData = [];
   renderCart();
   hideCart();
 });
 
-// Tambahkan tombol cart di header/nav jika belum ada
+// Optional: Tambahkan tombol cart di header/nav jika ingin
 const nav = document.querySelector('.nav');
 if(nav && !document.querySelector('.nav__cart')) {
   const cartBtn = document.createElement('button');
@@ -241,5 +225,10 @@ if(nav && !document.querySelector('.nav__cart')) {
   nav.appendChild(cartBtn);
 }
 
-// Render awal jika ada data
-renderCart();
+/*=============== LOGO IMAGE SIZE ===============*/
+const logoImg = document.querySelector('.nav__logo-img');
+if(logoImg) {
+  logoImg.style.height = '40px';
+  logoImg.style.width = 'auto';
+  logoImg.style.display = 'block';
+}

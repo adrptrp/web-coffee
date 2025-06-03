@@ -110,7 +110,7 @@ sr.reveal(`.about__coffee`, {delay: 1000})
 sr.reveal(`.about__leaf-1, .about__leaf-2`, {delay: 1400, rotate: {z: 90}})
 sr.reveal(`.products__card, .contact__info`, {interval: 100})
 
-/*=============== CART LOGIC ===============*/
+/*=============== CART FUNCTIONALITY ===============*/
 const cart = document.getElementById('cart');
 const cartOverlay = document.getElementById('cart-overlay');
 const cartClose = document.getElementById('cart-close');
@@ -121,20 +121,20 @@ const cartForm = document.getElementById('cart-form');
 let cartData = [];
 
 // Show/hide cart
-function showCart() { cart.style.display = 'block'; }
-function hideCart() { cart.style.display = 'none'; }
+function showCart() { cart.classList.add('show'); }
+function hideCart() { cart.classList.remove('show'); }
 cartOverlay.addEventListener('click', hideCart);
 cartClose.addEventListener('click', hideCart);
 
 // Add to cart from any menu
-document.querySelectorAll('.products__button, .button-dark').forEach(btn => {
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
     let card = btn.closest('.products__card') || btn.closest('.popular__card');
     if (!card) return;
     const name = card.querySelector('.products__name, .popular__name').textContent;
-    const price = card.querySelector('.products__price')
-      ? card.querySelector('.products__price').textContent
+    const price = card.querySelector('.products__price') 
+      ? card.querySelector('.products__price').textContent 
       : (btn.textContent.match(/Rp[\d.]+/) ? btn.textContent.match(/Rp[\d.]+/)[0] : 'Rp0');
     const img = card.querySelector('.products__coffee, .popular__coffee').getAttribute('src');
     addToCart({ name, price, img });
@@ -156,6 +156,7 @@ function renderCart() {
   cartItems.innerHTML = '';
   let total = 0;
   cartData.forEach((item, idx) => {
+    // Only sum checked items
     const priceNum = parseInt(item.price.replace(/[^\d]/g, ''));
     if (item.checked) total += priceNum * item.qty;
     cartItems.innerHTML += `
@@ -164,7 +165,7 @@ function renderCart() {
         <img src="${item.img}" class="cart__item-img" alt="${item.name}">
         <div class="cart__item-info">
           <div>${item.name}</div>
-          <div>
+          <div class="cart__item-qty">
             <button type="button" class="cart__item-qty-btn" data-action="dec" data-idx="${idx}">-</button>
             <span>${item.qty}</span>
             <button type="button" class="cart__item-qty-btn" data-action="inc" data-idx="${idx}">+</button>
@@ -204,7 +205,7 @@ function renderCart() {
   });
 }
 
-// Place Order (checkout via WhatsApp)
+// Place Order (checkout)
 cartForm.addEventListener('submit', function(e) {
   e.preventDefault();
   const selected = cartData.filter(i => i.checked);
@@ -212,14 +213,8 @@ cartForm.addEventListener('submit', function(e) {
     alert('Pilih minimal 1 item untuk dipesan!');
     return;
   }
-  // Format pesan WhatsApp
-  let pesan = 'Halo, saya ingin memesan:\n';
-  selected.forEach(i => {
-    pesan += `- ${i.name} x${i.qty} (${i.price})\n`;
-  });
-  const nomorWA = '6289632372161'; // Ganti dengan nomor WA cafe kamu
-  const urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-  window.open(urlWA, '_blank');
+  // Simulasi submit
+  alert('Pesanan berhasil dikirim:\n' + selected.map(i => `${i.name} x${i.qty}`).join('\n'));
   // Hapus item yang di-checkout dari cart
   cartData = cartData.filter(i => !i.checked);
   renderCart();

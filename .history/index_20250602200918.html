@@ -22,7 +22,10 @@
    <!--==================== HEADER ====================-->
    <header class="header" id="header">
       <nav class="nav container">
-         <a href="#" class="nav__logo">Lunette Cafe</a>
+         <a href="#" class="nav__logo">
+            <img src="assets/img/lunette-logo.png" alt="Lunette Cafe Logo" class="nav__logo-img">
+            <span style="margin-left:8px; font-weight:bold;">Lunette Cafe</span>
+         </a>
 
          <div class="nav__menu" id="nav-menu">
             <ul class="nav__list">
@@ -375,40 +378,3 @@
       <script src="js/main.js"></script>
    </body>
 </html>
-
-      <!--==================== CHEAKOUT CART ====================-->
-      <div class="checkout__cart">
-         <div class="checkout__cart-header">
-            <h3 class="checkout__cart-title">Your Cart</h3>
-            <button class="checkout__cart-close">
-               <i class="ri-close-line"></i>
-            </button>
-         </div>
-         <ul class="checkout__cart-list">
-            <!-- Cart items will be dynamically added here -->
-         </ul>
-         <div class="checkout__cart-footer">
-            <span class="checkout__cart-total">Total: Rp0</span>
-            <button class="checkout__cart-button button">Checkout</button>
-         </div>
-      </div>
-
-<!-- Cart Modal -->
-<div class="cart" id="cart" style="display:none;">
-  <div class="cart__overlay" id="cart-overlay"></div>
-  <div class="cart__content">
-    <div class="cart__header">
-      <h3>Keranjang Pesanan</h3>
-      <button class="cart__close" id="cart-close"><i class="ri-close-line"></i></button>
-    </div>
-    <form id="cart-form">
-      <div class="cart__items" id="cart-items">
-        <!-- Daftar pesanan akan muncul di sini lewat JS -->
-      </div>
-      <div class="cart__footer">
-        <span>Total: <span id="cart-total">Rp0</span></span>
-        <button type="submit" class="button" id="cart-checkout">Place Order</button>
-      </div>
-    </form>
-  </div>
-</div>

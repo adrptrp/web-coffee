@@ -1118,85 +1118,46 @@ img {
     zoom: 1.3;
   }
 
-/* Cart Styles */
-.cart {
+/* Cart Modal sudah ada di jawaban sebelumnya */
+
+/* Checkout Modal */
+.checkout-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  display: none;
-  z-index: 9999;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.cart.show, .cart[style*="display: block"] {
-  display: block;
-}
-.cart__overlay {
+.checkout-modal__overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.4);
 }
-.cart__content {
-  position: absolute;
-  right: 0; top: 0; height: 100%; width: 350px;
+.checkout-modal__content {
+  position: relative;
   background: #fff;
-  box-shadow: -2px 0 16px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
+  padding: 2rem;
+  border-radius: 1rem;
+  min-width: 320px;
+  z-index: 2;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
-.cart__header, .cart__footer {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
-}
-.cart__header {
+.checkout-modal__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 }
-.cart__close {
+.checkout-modal__close {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
 }
-.cart__items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
+.checkout-modal__body {
+  margin-bottom: 1.5rem;
 }
-.cart__item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.cart__item-img {
-  width: 50px; height: 50px; object-fit: cover; margin-right: 1rem;
-}
-.cart__item-info {
-  flex: 1;
-}
-.cart__item-qty-btn {
-  width: 24px;
-  height: 24px;
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.cart__item-checkbox {
-  margin-right: 1rem;
-  accent-color: var(--first-color, #b6895b);
-}
-.cart__item-remove {
-  background: none;
-  border: none;
-  color: #e74c3c;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-left: 0.5rem;
-}
-.cart__footer {
-  border-top: 1px solid #eee;
-  border-bottom: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.checkout-modal__footer {
+  text-align: right;
 }
