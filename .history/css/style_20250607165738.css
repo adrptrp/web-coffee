@@ -204,13 +204,29 @@ img {
 @media screen and (max-width: 1150px) {
   .nav__menu{
     position: fixed;
-    top: -120%;
-    left: 0;
-    background-color: var(--body-color);
-    width: 100%;
-    padding-block: 4rem;
-    box-shadow: 0 8px 16px hsla(166, 85%, 8%, .3);
-    transition: top .4s;
+    top: 0; right: -100%;
+    width: 70vw;
+    max-width: 320px;
+    height: 100vh;
+    background: #fff;
+    transition: right 0.3s;
+    z-index: 1000;
+    box-shadow: -2px 0 16px rgba(0,0,0,0.07);
+  }
+}
+
+.nav__menu.show-menu {
+  right: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .nav__menu {
+    position: static;
+    width: auto;
+    height: auto;
+    background: none;
+    box-shadow: none;
+    display: block;
   }
 }
 
@@ -377,7 +393,7 @@ img {
 }
 
 .button-dark:hover{
-  background-color: var(--first-color);
+  background-color: var(--first-color-alt);
 }
 
 .button, .products__button, .button-dark {
@@ -406,6 +422,18 @@ img {
   row-gap: 1.5rem;
 }
 
+/* Card produk */
+.products__card,
+.popular__card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .popular__images{
   position: relative;
   display: grid;
@@ -418,7 +446,7 @@ img {
   height: 195px;
   background-color: var(--first-color);
   border-radius: 50%;
-  clip-path: inset(50% 0 0 0);
+  clip-path: circle(50% at 50% 50%);
 }
 
 .popular__images img{
@@ -461,11 +489,11 @@ img {
 }
 
 .popular__card:hover .popular__bean-1{
-  transform: translate(-.5rem, -.25rem);
+  transform: translate(.5rem, -.25rem);
 }
 
 .popular__card:hover .popular__bean-2{
-  transform: translate(-.5rem, -.25rem);
+  transform: translate(.5rem, -.25rem);
 }
 
 /* Swiper class */
@@ -1176,108 +1204,67 @@ img {
   body{
     zoom: 1.3;
   }
-
-/* POPULAR CREATIONS STYLE - INSPIRED BY VIDEO */
-.popular__container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
-.popular__swiper,
-.popular__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-}
-
-.popular__card {
-  background: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 2px 16px rgba(62,39,34,0.07);
-  padding: 2rem 1rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: box-shadow 0.2s;
-  position: relative;
-}
-
-.popular__card:hover {
-  box-shadow: 0 8px 32px rgba(182,137,91,0.15);
-}
-
-.popular__img-wrap {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.popular__circle {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: #f3e9e1;
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.popular__coffee {
-  width: 80px;
-  z-index: 2;
-  filter: drop-shadow(0 4px 12px rgba(62,39,34,0.10));
-}
-
-.popular__name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #3e2723;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.popular__desc {
-  color: #7c5e3c;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.button,
-.button-dark {
-  background: #b6895b;
-  color: #fff;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.7rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 0.5rem;
-}
-
-.button:hover,
-.button-dark:hover {
-  background: #a0764b;
-}
-
-/* Responsive Popular */
-@media screen and (max-width: 900px) {
-  .popular__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .popular__img-wrap, .popular__circle { width: 90px; height: 90px; }
-  .popular__coffee { width: 60px; }
-}
-@media screen and (max-width: 600px) {
-  .popular__grid {
-    grid-template-columns: 1fr;
-  }
-  .popular__img-wrap, .popular__circle { width: 60px; height: 60px; }
-  .popular__coffee { width: 40px; }
-}
+/*==================== POPULAR ====================*/
+<section class="popular section" id="popular">
+   <div class="popular__container container">
+      <h2 class="section__title">POPULAR <br> CREATIONS</h2>
+      <div class="popular__swiper swiper">
+         <div class="swiper-wrapper">
+            <!-- Card 1 -->
+            <article class="popular__card swiper-slide">
+               <div class="popular__images">
+                  <div class="popular__shape popular__shape--1"></div>
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-1">
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-2">
+                  <img src="assets/img/popular-coffee-1.png" alt="Vanilla Latte" class="popular__coffee">
+               </div>
+               <div class="popular__data">
+                  <h2 class="popular__name">VANILLA LATTE</h2>
+                  <p class="popular__description">
+                     Nikmati kesederhanaan dari kopi cold brew kami yang lezat.
+                  </p>
+                  <button class="button button-dark add-to-cart-btn">Order now: Rp35.000</button>
+               </div>
+            </article>
+            <!-- Card 2 -->
+            <article class="popular__card swiper-slide">
+               <div class="popular__images">
+                  <div class="popular__shape popular__shape--2"></div>
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-1">
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-2">
+                  <img src="assets/img/popular-coffee-2.png" alt="Classic Coffee" class="popular__coffee">
+               </div>
+               <div class="popular__data">
+                  <h2 class="popular__name">CLASSIC COFFEE</h2>
+                  <p class="popular__description">
+                     Nikmati kesederhanaan dari kopi cold brew kami yang lezat.
+                  </p>
+                  <button class="button button-dark add-to-cart-btn">Order now: Rp20.000</button>
+               </div>
+            </article>
+            <!-- Card 3 -->
+            <article class="popular__card swiper-slide">
+               <div class="popular__images">
+                  <div class="popular__shape popular__shape--3"></div>
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-1">
+                  <img src="assets/img/bean-img.png" alt="bean" class="popular__bean-2">
+                  <img src="assets/img/popular-coffee-3.png" alt="Mocha Coffee" class="popular__coffee">
+               </div>
+               <div class="popular__data">
+                  <h2 class="popular__name">MOCHA COFFEE</h2>
+                  <p class="popular__description">
+                     Nikmati kesederhanaan dari kopi cold brew kami yang lezat.
+                  </p>
+                  <button class="button button-dark add-to-cart-btn">Order now: Rp42.000</button>
+               </div>
+            </article>
+         </div>
+         <!-- Swiper navigation & pagination -->
+         <div class="swiper-button-next"></div>
+         <div class="swiper-button-prev"></div>
+         <div class="swiper-pagination"></div>
+      </div>
+   </div>
+</section>

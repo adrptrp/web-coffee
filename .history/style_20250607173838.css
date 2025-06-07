@@ -1,0 +1,105 @@
+/*=============== POPULAR ===============*/
+.popular {
+  background-color: var(--body-white-color);
+  padding-block: 4rem 2rem;
+}
+
+.popular .section__title {
+  color: var(--title-color);
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.popular__swiper {
+  padding-top: 1.5rem;
+}
+
+.popular__card {
+  width: 270px;
+  display: grid;
+  row-gap: 1.5rem;
+  background: transparent;
+}
+
+.popular__images {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  justify-self: center;
+  margin-bottom: 1rem;
+}
+
+.popular__shape {
+  width: 195px;
+  height: 195px;
+  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -30px; /* Bulatan turun ke bawah */
+  z-index: 1;
+}
+
+/* Warna bulatan berbeda tiap card */
+.popular__shape--1 { background-color: #3b82f6; } /* biru muda */
+.popular__shape--2 { background-color: #2563eb; } /* biru sedang */
+.popular__shape--3 { background-color: #1e40af; } /* biru tua */
+
+.popular__images img {
+  position: absolute;
+}
+
+.popular__coffee {
+  position: relative;
+  width: 130px;
+  top: -1.5rem;
+  z-index: 2;
+}
+
+.popular__bean-1 {
+  width: 30px;
+  top: 3rem;
+  left: 5rem;
+  transition: transform .5s .1s;
+  z-index: 3;
+}
+
+.popular__bean-2 {
+  width: 20px;
+  right: 2rem;
+  bottom: 2rem;
+  rotate: 75deg;
+  filter: blur(1px);
+  transition: transform .5s .1s;
+  z-index: 3;
+}
+
+.popular__data {
+  text-align: center;
+}
+
+.popular__name {
+  font-size: var(--h1-font-size);
+  color: var(--title-color);
+  margin-bottom: .5rem;
+}
+
+.popular__description {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.popular__card:hover .popular__bean-1 {
+  transform: translate(.5rem, -.25rem);
+}
+
+.popular__card:hover .popular__bean-2 {
+  transform: translate(.5rem, -.25rem);
+}
+
+/* Swiper class */
+.swiper {
+  overflow: visible;
+  margin-inline: initial;
+}
